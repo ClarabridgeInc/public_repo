@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Properties;
@@ -28,12 +29,13 @@ public class CreateUsersUtil {
 	public static void main(String[] args) {
 		Properties prop = new Properties();
 		InputStream input = null;
+		CSVReader reader = null;
 		try {
 		    File file = new File(PROPERTIES_FILE);
 			input = new FileInputStream(file);
 			prop.load(input);
 			
-		    CSVReader reader = new CSVReader(new FileReader(prop.getProperty("csv.file")), ',' , '"' , 0);
+		    reader = new CSVReader(new FileReader(prop.getProperty("csv.file")), ',' , '"' , 0);
 		    List<String[]> lines = reader.readAll();   
 		    String baseUrl = prop.getProperty("url");
 		    String login = prop.getProperty("login");
@@ -48,7 +50,7 @@ public class CreateUsersUtil {
                             try {
                                 String[] fields = lines.get(currLine);
                                 if (fields.length < 6) {
-                                    throw new RuntimeException("number of fields for '" + lines.get(currLine) + "' is less than 6");
+                                    throw new RuntimeException("number of fields for '" + Arrays.toString(lines.get(currLine)) + "' is less than 6");
                                 }
                                 if (fields[3] == null || "".equals(fields[3])) {
                                     fields[3] = fields[1] + "-whitbread";
@@ -57,7 +59,7 @@ public class CreateUsersUtil {
                                 String payload = getJsonObj(fields);
                                 callApi(url, login, password, payload, fields[5]);
                             } catch (Exception e) {
-                                System.err.println("User '" + lines.get(currLine) + "' was not created, cause: "  + e.getMessage());
+                                System.err.println("User '" + Arrays.toString(lines.get(currLine)) + "' was not created, cause: "  + e.getMessage());
                                 //e.printStackTrace();
                             }
                             currLine = lineNum.getAndIncrement();
@@ -80,6 +82,13 @@ public class CreateUsersUtil {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			}
+			if (reader != null) {
+			    try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 			}
 		}
 		
