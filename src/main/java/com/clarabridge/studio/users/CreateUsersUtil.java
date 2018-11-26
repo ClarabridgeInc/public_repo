@@ -229,8 +229,8 @@ public class CreateUsersUtil {
 			}
 		}
 
-		if (responseCode != 200) {
-			System.out.println("Response code was " + responseCode + ", when registering user: " + login + ". Result: " + jsonString.toString());
+		if (responseCode != 200 && responseCode != 201) {
+			System.out.println("Response code was " + responseCode + " using endpoint: " + urlString + ". Result: " + jsonString.toString());
 		}
 	}
 
