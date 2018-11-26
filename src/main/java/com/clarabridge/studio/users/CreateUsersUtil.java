@@ -93,6 +93,7 @@ public class CreateUsersUtil {
 					}
 				});
 			}
+
 			executor.shutdown();
 			try {
 				executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
@@ -187,11 +188,11 @@ public class CreateUsersUtil {
 				+ "\"action\":\"" + name + "\"}";
 	}
 
-	private static String callApi(String urlString, String login, String password, String payload, String maId) {
+	private static void callApi(String urlString, String login, String password, String payload, String maId) {
 		String line;
+		int responseCode;
 		StringBuilder jsonString = new StringBuilder();
 
-		System.out.println("> " + urlString);
 		HttpURLConnection connection = null;
 		try {
 			URL url = new URL(urlString);
@@ -210,6 +211,8 @@ public class CreateUsersUtil {
 			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
 			writer.write(payload);
 			writer.close();
+
+			responseCode = connection.getResponseCode();
 			if (connection.getHeaderField("error") != null) {
 				throw new Exception(connection.getHeaderField("error"));
 			}
@@ -225,7 +228,10 @@ public class CreateUsersUtil {
 				connection.disconnect();
 			}
 		}
-		return jsonString.toString();
+
+		if (responseCode != 200) {
+			System.out.println("Response code was " + responseCode + ", when registering user: " + login + ". Result: " + jsonString.toString());
+		}
 	}
 
 }
