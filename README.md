@@ -8,16 +8,17 @@ Running:
 
 Properties file content example:
 ```properties
-url=http://10.142.237.91/cxstudio/api/v1/users/%s/account
-login=admin@clarabridge.com
-password=******
-csv.file={csv_file_path}
+url.base=http://localhost:18080/cxstudio/api/v1
+login=pavel.dzunovich@clarabridge.com
+password=*********
 threads=2
 force.flag=0
+extended=false
 ```
 
 CSV file content:
 ```csv
-First Name,Last Name,Email Address,Password,License type,Master Account
-Some First Name,Some Second Name,some.email@email.com,Password,license_type_id,master_account_id
+First Name,Last Name,Email Address,Password,License type,Master Account,Group Name,Unique ID,Custom Field
+Some First Name,Some Second Name,some.email7@clarabridge.com,Password1!,1,1,Alert subscribed group,345,Custom Value
+...
 ```
