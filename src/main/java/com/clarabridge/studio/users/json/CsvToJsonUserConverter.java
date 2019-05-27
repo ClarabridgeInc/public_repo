@@ -4,6 +4,8 @@ import com.clarabridge.studio.users.entity.GroupAdditionPayload;
 import com.clarabridge.studio.users.entity.GroupsCache;
 import com.google.gson.Gson;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.*;
 
 import static com.clarabridge.studio.users.CreateUsersUtil.*;
@@ -77,16 +79,15 @@ public class CsvToJsonUserConverter {
 				String.valueOf(registered),
 				fields[DEFAULT_MA_ID_FIELD],
 				licensePermissions,
-				extension);
+				StringUtils.isEmpty(extension) ? "" : "," + extension);
 	}
 
 	private String buildExtension(String[] fields) {
 		String uniqueId = fields.length > UNIQUE_ID_FIELD ? fields[UNIQUE_ID_FIELD] : null;
 		String customField = fields.length > CUSTOM_FIELD ? fields[CUSTOM_FIELD] : null;
 
-		String extensionBase = ","
-				+ "\"authUniqueId\": \"%s\","
-				+ "\"customField\": \"%s\"";
+		String extensionBase = (!StringUtils.isEmpty(uniqueId) ? "\"authUniqueId\": \"%s\"," : "")
+				+ (!StringUtils.isEmpty(customField) ? "\"customField\": \"%s\"" : "");
 
 		return String.format(extensionBase,
 				uniqueId,

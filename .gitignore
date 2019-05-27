@@ -4,3 +4,6 @@ build/*
 *.iml
 *.iws
 .idea/*
+/build/
+import.properties
+generate.properties
