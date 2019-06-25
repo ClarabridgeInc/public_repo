@@ -46,7 +46,7 @@ public class HttpClient {
 			}
 			br.close();
 		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage());
+			throw new RuntimeException(e.getMessage(), e);
 		} finally {
 			if (connection != null) {
 				connection.disconnect();

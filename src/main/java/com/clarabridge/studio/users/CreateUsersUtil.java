@@ -75,7 +75,9 @@ public class CreateUsersUtil {
 
 			System.out.println(">>> Getting necessary metadata");
 			List<Long> masterAccountIds = getMasterAccountIds(lines);
-			GroupsCache groupsCache = getGroups(Urls.groupsUrl(baseUrl), login, password, masterAccountIds);
+			GroupsCache groupsCache = extended
+					? getGroups(Urls.groupsUrl(baseUrl), login, password, masterAccountIds)
+					: null;
 
 			System.out.println(">>> Starting user upload using " + threadNum + " thread(s)");
 			HttpClient client = new HttpClient();
@@ -120,6 +122,7 @@ public class CreateUsersUtil {
 						} catch (Exception e) {
 							System.out.println("[e] !!! User '" + Arrays.toString(lines.get(currLine)) + "' was not created.\r\n"
 								+ "\tCause: " + e.getMessage());
+							e.printStackTrace();
 						}
 						currLine = lineNum.getAndIncrement();
 					}
