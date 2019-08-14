@@ -108,7 +108,7 @@ public class CreateUsersUtil {
 							client.doRequest(userCreationRequest);
 
 							if (extended) {
-								System.out.println("[i] Adding user " + fields[USER_EMAIL_FIELD] + " to specified groups");
+								System.out.println(String.format("[%d] Adding user " + fields[USER_EMAIL_FIELD] + " to specified groups", currLine));
 								String groupAdditionPayload = new CsvToJsonUserConverter().getGroupsPayload(fields, groupsCache);
 
 								HttpRequest groupsRequest = new HttpRequest();

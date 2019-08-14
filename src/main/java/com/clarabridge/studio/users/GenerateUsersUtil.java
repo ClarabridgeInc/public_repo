@@ -39,8 +39,9 @@ public class GenerateUsersUtil {
 			String first = randomOrDefault(config.firstNames, rand, "First");
 			String last = randomOrDefault(config.lastNames, rand, "Last");
 			String email = first + "." + last + "@" + config.emailDomain;
+			email = email.replaceAll("[\\(\\)\"']", "").replaceAll(" ", ".").toLowerCase();
 			if (emails.contains(email))
-				email = first + "." + last + i + "@" + config.emailDomain;
+				email = email.replace("@", i + "@");
 			emails.add(email);
 			String password = config.password;
 			String license = "" + config.licenseId;
